@@ -13,12 +13,20 @@ module.exports = {
     'prettier',
   ],
   ignorePatterns: ['dist', '.eslintrc.cjs'],
+  parserOptions: {
+    sourceType: 'module',
+    project: ['./tsconfig.json'],
+  },
   parser: '@typescript-eslint/parser',
-  plugins: ['react-refresh'],
+  plugins: ['@typescript-eslint/eslint-plugin'],
   rules: {
-    'react-refresh/only-export-components': [
-      'warn',
-      { allowConstantExport: true },
-    ],
+    'react/no-array-index-key': 'off',
+    'react/jsx-props-no-spreading': 'off',
+    'react/require-default-props': 'off',
+    'react/prop-types': 'off',
+    'react/react-in-jsx-scope': 'off',
+    'arrow-body-style': 'off',
+    '@typescript-eslint/dot-notation': 'off',
+    'import/prefer-default-export': 'off',
   },
 };

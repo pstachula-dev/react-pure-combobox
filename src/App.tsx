@@ -1,34 +1,61 @@
-import { useState } from 'react';
 import reactLogo from './assets/react.svg';
-import viteLogo from '/vite.svg';
 import './App.css';
+import { ReactPureCombobox } from './ReactPureCombobox/ReactPureCombobox';
+
+export const mockCategories = [
+  {
+    value: '1',
+    label: 'Category 1',
+    parentId: null,
+  },
+  {
+    value: '2',
+    label: 'Category 2',
+    parentId: null,
+  },
+  {
+    value: '11',
+    label: 'Category 11',
+    parentId: '1',
+  },
+  {
+    value: '12',
+    label: 'Category 12',
+    parentId: '1',
+  },
+  {
+    value: '22',
+    label: 'Category 22',
+    parentId: '2',
+  },
+  {
+    value: '111',
+    label: 'Category 111',
+    parentId: '12',
+  },
+];
 
 function App() {
-  const [count, setCount] = useState(0);
-
   return (
-    <>
+    <div style={{ height: 2000, width: 500 }}>
       <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
+        <a href="https://react.dev" target="_blank" rel="noreferrer">
           <img src={reactLogo} className="logo react" alt="React logo" />
         </a>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+
+      <h3>Basic example:</h3>
+      <ReactPureCombobox
+        enableSearch
+        onChange={(values) => {
+          console.log('values', values);
+        }}
+        list={mockCategories}
+      />
+
+      <h3 className="mt-10">Tags example:</h3>
+      <ReactPureCombobox enableSearch showTags list={mockCategories} />
+    </div>
   );
 }
 
