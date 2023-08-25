@@ -32,31 +32,37 @@ const createTreeFromFlatList = (items: ComboboxTreeItem[]) => {
 
 function Tags({
   list,
+  filtered,
   values,
   setValues,
+  setFiltered,
 }: {
+  filtered: ComboboxProps['list'];
   list: ComboboxProps['list'];
   values: ComboboxItem['value'][];
   setValues: (values: ComboboxItem['value'][]) => void;
+  setFiltered: (values: ComboboxItem[]) => void;
 }) {
-  if (!values.length) return <div>Select some items</div>;
+  if (!values?.length || !list?.length) return <div>Select some items</div>;
 
   return (
-    <div className="grid grid-cols-12 gap-2">
+    <div className="flex flex-wrap">
       {list
         .filter((el) => values.includes(el.value))
         .map((el) => (
-          <button
+          <div
+            aria-hidden="true"
             key={el.value}
-            type="button"
-            className="col-span-3  flex justify-between border border-gray-200 bg-gray-800 text-sm"
+            className="m-1 inline-flex min-w-[40px] bg-zinc-700 p-1 text-xs"
             onClick={(e) => {
               setValues(values.filter((v) => v !== el.value));
+              setFiltered([...filtered, el]);
               e.stopPropagation();
             }}
           >
-            {el.label} <img src={Close} alt="" />
-          </button>
+            <span>{el.label}</span>{' '}
+            <img src={Close} className="ml-1 w-4" alt="" />
+          </div>
         ))}
     </div>
   );
@@ -66,9 +72,10 @@ export function ReactPureCombobox({
   list,
   selectLabel,
   onChange,
-  enableScroll = false,
-  enableSearch = false,
+  showScroll = false,
+  showSearch = false,
   showTags = false,
+  showCheckboxes = false,
 }: ComboboxProps) {
   const [open, setOpen] = useState(false);
   const [values, setValues] = useState<ComboboxItem['value'][]>([]);
@@ -81,20 +88,25 @@ export function ReactPureCombobox({
     [filtered],
   );
 
+  const itemsLength = filtered?.length || 0;
+  const omitSelectedItems = !showCheckboxes;
+
   const selectedLabel =
     values.length > 0
       ? `Items: ${list.filter((item) => values.includes(item.value)).length}`
       : selectLabel || 'Select';
 
   const filterList = (e: FormEvent<HTMLInputElement>) => {
-    setFiltered(
-      list.filter((item) =>
-        item.label.toLowerCase().includes(e.currentTarget.value.toLowerCase()),
-      ),
+    const currVal = e.currentTarget.value.toLowerCase();
+    const newData = list.filter((item) =>
+      item.label.toLowerCase().includes(currVal),
     );
+    if (omitSelectedItems) {
+      setFiltered(newData.filter((el) => !values.includes(el.value)));
+    } else {
+      setFiltered(newData);
+    }
   };
-
-  const itemsLength = filtered?.length || 0;
 
   return (
     <>
@@ -103,17 +115,23 @@ export function ReactPureCombobox({
           <button
             ref={buttonRef}
             type="button"
-            className="w-full justify-between border border-gray-200"
+            className="justify-between rounded bg-zinc-900 px-4 py-2"
             onClick={() => setOpen(!open)}
           >
-            <Tags setValues={setValues} list={filtered} values={values} />
+            <Tags
+              setFiltered={setFiltered}
+              setValues={setValues}
+              filtered={filtered}
+              list={list}
+              values={values}
+            />
           </button>
         )}
         {!showTags && (
           <button
             ref={buttonRef}
             type="button"
-            className="w-full justify-between border border-gray-200"
+            className="justify-between rounded bg-zinc-900 px-4 py-2"
             onClick={() => setOpen(!open)}
           >
             {selectedLabel}
@@ -124,29 +142,30 @@ export function ReactPureCombobox({
         referenceElement={buttonRef.current}
         open={open}
         setOpen={setOpen}
+        values={values}
       >
         <div>
-          {enableSearch && (
+          {showSearch && (
             <input
-              className=" p-4"
+              className="bg-zinc-800 p-4"
               onFocus={filterList}
               onInput={filterList}
               placeholder="Search"
             />
           )}
           <div
-            className={cn(
-              enableScroll && 'h-[320px]',
-              'w-full bg-gray-500 p-4',
-            )}
+            className={cn(showScroll && 'h-[320px]', 'w-full bg-zinc-900 p-4')}
           >
             {itemsLength === 0 && <div className="text-center">No items</div>}
             <ComboboxGroup
               data={tree}
+              list={list}
               values={values}
+              omitSelectedItems={omitSelectedItems}
+              showCheckboxes={showCheckboxes}
               onChange={onChange}
               setValues={setValues}
-              setOpen={setOpen}
+              setFiltered={setFiltered}
             />
           </div>
         </div>

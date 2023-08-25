@@ -4,7 +4,7 @@ export const useOutSideClick = ({
   refs,
   onOutsideClick,
 }: {
-  refs: Array<HTMLElement | null>;
+  refs: (HTMLElement | null)[];
   onOutsideClick: () => void;
 }) => {
   useEffect(() => {
@@ -12,10 +12,7 @@ export const useOutSideClick = ({
       const isOutsideAllRefs = refs.every(
         (ref) => ref && !ref.contains(event.target as Node),
       );
-
-      if (isOutsideAllRefs) {
-        onOutsideClick();
-      }
+      if (isOutsideAllRefs) onOutsideClick();
     };
     document.addEventListener('mousedown', handleClickOutside);
     return () => {

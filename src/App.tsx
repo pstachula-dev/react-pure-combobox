@@ -1,6 +1,31 @@
-import reactLogo from './assets/react.svg';
-import './App.css';
 import { ReactPureCombobox } from './ReactPureCombobox/ReactPureCombobox';
+
+export const mockCategoriesFlat = [
+  {
+    value: '1',
+    label: 'Category 1',
+  },
+  {
+    value: '2',
+    label: 'Category 2',
+  },
+  {
+    value: '11',
+    label: 'Category 11',
+  },
+  {
+    value: '12',
+    label: 'Category 12',
+  },
+  {
+    value: '22',
+    label: 'Category 22',
+  },
+  {
+    value: '111',
+    label: 'Category 111',
+  },
+];
 
 export const mockCategories = [
   {
@@ -37,24 +62,12 @@ export const mockCategories = [
 
 function App() {
   return (
-    <div style={{ height: 2000, width: 500 }}>
-      <div>
-        <a href="https://react.dev" target="_blank" rel="noreferrer">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-
+    <div className="mx-auto w-[300px]">
       <h3>Basic example:</h3>
-      <ReactPureCombobox
-        enableSearch
-        onChange={(values) => {
-          console.log('values', values);
-        }}
-        list={mockCategories}
-      />
+      <ReactPureCombobox showSearch showCheckboxes list={mockCategories} />
 
       <h3 className="mt-10">Tags example:</h3>
-      <ReactPureCombobox enableSearch showTags list={mockCategories} />
+      <ReactPureCombobox showSearch showTags list={mockCategoriesFlat} />
     </div>
   );
 }

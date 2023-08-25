@@ -11,8 +11,9 @@ export type ComboboxTreeItem = ComboboxItem & {
 export type ComboboxProps = {
   selectLabel?: string;
   list: ComboboxItem[];
-  enableScroll?: boolean;
-  enableSearch?: boolean;
+  showScroll?: boolean;
+  showSearch?: boolean;
+  showCheckboxes?: boolean;
   showTags?: boolean;
-  onChange?: (values: string[]) => void;
+  onChange?: (values: ComboboxItem[]) => void;
 };
