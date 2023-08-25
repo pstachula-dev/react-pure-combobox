@@ -1,0 +1,32 @@
+module.exports = {
+  root: true,
+  env: { browser: true, es2020: true },
+  extends: [
+    'airbnb',
+    'airbnb-typescript',
+    'eslint:recommended',
+    'plugin:@typescript-eslint/recommended',
+    'plugin:@typescript-eslint/eslint-recommended',
+    'airbnb/hooks',
+    'plugin:react-hooks/recommended',
+    'plugin:react/recommended',
+    'prettier',
+  ],
+  ignorePatterns: ['dist', '.eslintrc.cjs'],
+  parserOptions: {
+    sourceType: 'module',
+    project: ['./tsconfig.json'],
+  },
+  parser: '@typescript-eslint/parser',
+  plugins: ['@typescript-eslint/eslint-plugin'],
+  rules: {
+    'react/no-array-index-key': 'off',
+    'react/jsx-props-no-spreading': 'off',
+    'react/require-default-props': 'off',
+    'react/prop-types': 'off',
+    'react/react-in-jsx-scope': 'off',
+    'arrow-body-style': 'off',
+    '@typescript-eslint/dot-notation': 'off',
+    'import/prefer-default-export': 'off',
+  },
+};
